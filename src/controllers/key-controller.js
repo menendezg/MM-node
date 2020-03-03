@@ -11,12 +11,34 @@
  * be allowed to change the state, without concurrency issues.
 
  */
+const redis = require("redis");
+
+port = 6379;
+host = "127.0.0.1";
+// create and connect redis client to local instance.
+const client = redis.createClient(port, host);
+
+client.on("connect", function() {
+  console.log("Redis client connected");
+});
+
+client.on("error", function(err) {
+  console.log("Something went wrong " + err);
+});
 
 function getKey(req, res) {
-    const key = req.url.split("/")[2]
-  
-  
-    res.status(200).send({
+  // just only for test purpose
+  client.set("123", "ajdshljfgajlsdf", redis.print);
+  const key = req.url.split("/")[2];
+  client.get(key, function(error, result) {
+    if (error) {
+      console.log(error);
+      throw error;
+    }
+    console.log("GET result ->" + result);
+  });
+
+  res.status(200).send({
     message: key
   });
 }
