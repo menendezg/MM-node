@@ -17,11 +17,14 @@ function getKey(req, res) {
       res.status(404).send({
         message: "Sorry, we dont have a value for that key"
       })
+    
+    }else{
+      res.status(200).send({
+        key: result
+      });
+
     }
-    console.log("GET result ->" + result);
-    res.status(200).send({
-      key: result
-    });
+    
   });
 
 }
